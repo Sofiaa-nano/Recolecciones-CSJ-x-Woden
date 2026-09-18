@@ -169,7 +169,10 @@ h1.title { font-size: clamp(34px, 5vw, 50px); line-height: 1.02; margin-bottom: 
 .stat {
   background: var(--paper-raised);
   padding: 16px 18px;
+  position: relative;
 }
+.stat-icon { display: block; width: 22px; height: 22px; color: var(--accent-strong); opacity: 0.85; margin-bottom: 8px; }
+.stat-icon svg { width: 100%; height: 100%; }
 .stat-value { font-family: "Barlow Condensed", sans-serif; font-size: 30px; font-weight: 700; line-height: 1; }
 .stat-label { font-size: 12px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 6px; }
 
@@ -277,6 +280,13 @@ input.js-capacity:focus { outline: 2px solid var(--accent); outline-offset: 1px;
 .capacity-hint { color: var(--ink-faint); font-size: 12.5px; max-width: 30ch; margin-top: 10px; }
 
 .capacity-result { display: flex; flex-direction: column; gap: 12px; }
+.capacity-van-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.capacity-van-wrap { position: relative; width: 176px; flex: none; }
+svg.capacity-van { width: 100%; height: auto; display: block; }
+#cargo-fill-rect { transition: y .35s ease, height .35s ease; }
+.cargo-pip { opacity: 0; transition: opacity .25s ease; }
+.cargo-pip.cargo-pip-on { opacity: 1; }
+.capacity-van-label { display: block; text-align: center; font-size: 11px; color: var(--ink-soft); margin-top: 2px; }
 .capacity-trips-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .capacity-trips-number { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 44px; line-height: 1; color: var(--accent-strong); }
 .capacity-trips-label { font-size: 14px; color: var(--ink-soft); }
@@ -412,6 +422,15 @@ table.summary-table td { padding: 10px 14px 10px 2px; border-bottom: 1px solid v
 table.summary-table td.num, table.summary-table th.num { text-align: right; }
 table.summary-table tr:last-child td { border-bottom: none; }
 
+/* ---------- resumen: pastillas compactas (no barras) ---------- */
+.chip-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip-stat { display: inline-flex; align-items: baseline; gap: 6px; padding: 8px 12px; border-radius: 999px; background: var(--paper-raised); border: 1px solid var(--line); }
+.chip-icon { width: 15px; height: 15px; flex: none; color: var(--accent-strong); align-self: center; margin-right: 1px; }
+.chip-icon svg { width: 100%; height: 100%; display: block; }
+.chip-name { font-size: 12.5px; font-weight: 600; }
+.chip-num { font-size: 12.5px; font-weight: 700; color: var(--accent-strong); }
+.chip-sub { font-size: 11px; color: var(--ink-faint); }
+
 /* ---------- national registry ---------- */
 details.dept-group { border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper-raised); margin-bottom: 12px; overflow: hidden; }
 details.dept-group summary {
@@ -496,14 +515,11 @@ details.dept-group .stop-list { padding: 14px; }
 .cat-detail-stats { display: flex; gap: 22px; flex-wrap: wrap; }
 .cat-detail-stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); display: block; margin-bottom: 3px; }
 .cat-detail-stat-value { font-family: "IBM Plex Mono", monospace; font-size: 16px; font-weight: 600; }
-.cat-detail-box-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; justify-self: center; }
-.cat-detail-box {
-  border: 2px dashed var(--line-strong);
-  border-radius: 6px;
-  background: var(--paper-sunken);
-  transition: width .25s ease, height .25s ease;
-}
-.cat-detail-box-label { font-size: 11px; color: var(--ink-faint); font-family: "IBM Plex Mono", monospace; }
+.cat-detail-ref-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; justify-self: center; text-align: center; max-width: 108px; }
+.cat-detail-ref-icon { width: 44px; height: 44px; color: var(--ink-soft); }
+.cat-detail-ref-icon svg { width: 100%; height: 100%; }
+.cat-detail-ref-text { font-size: 11.5px; color: var(--ink-faint); line-height: 1.35; }
+.cat-detail-ref-text b { color: var(--ink-soft); font-weight: 600; }
 
 footer { border-top: 1px solid var(--line); padding-top: 22px; margin-top: 60px; color: var(--ink-soft); font-size: 13px; }
 footer p { max-width: 78ch; margin: 0 0 10px; }
@@ -545,10 +561,10 @@ footer strong { color: var(--ink); }
   <span class="eyebrow">Equipos pendientes de recolección</span>
   <h1 class="title">Recolección nacional de equipos TIC</h1>
   <div class="stat-row">
-    <div class="stat"><div class="stat-value">46</div><div class="stat-label">Equipos totales</div></div>
-    <div class="stat"><div class="stat-value">27</div><div class="stat-label">Sedes / puntos</div></div>
-    <div class="stat"><div class="stat-value">352 <span class="mono" style="font-size:16px;">kg</span></div><div class="stat-label">Peso total estimado</div></div>
-    <div class="stat"><div class="stat-value">11</div><div class="stat-label">Departamentos</div></div>
+    <div class="stat"><span class="stat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9l10-5 10 5v10l-10 5-10-5z"/><path d="M4 9l10 5 10-5"/><line x1="14" y1="14" x2="14" y2="24"/></svg></span><div class="stat-value">46</div><div class="stat-label">Equipos totales</div></div>
+    <div class="stat"><span class="stat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3c-5 0-8.5 3.8-8.5 8.4C5.5 17.3 14 25 14 25s8.5-7.7 8.5-13.6C22.5 6.8 19 3 14 3z"/><circle cx="14" cy="11.5" r="3"/></svg></span><div class="stat-value">27</div><div class="stat-label">Sedes / puntos</div></div>
+    <div class="stat"><span class="stat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="11" width="5" height="6.5" rx="1.2"/><rect x="20.5" y="11" width="5" height="6.5" rx="1.2"/><line x1="7.5" y1="14.3" x2="20.5" y2="14.3"/></svg></span><div class="stat-value">352 <span class="mono" style="font-size:16px;">kg</span></div><div class="stat-label">Peso total estimado</div></div>
+    <div class="stat"><span class="stat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="25"/><path d="M6 5h15l-3.5 4.5L21 14H6z"/></svg></span><div class="stat-value">11</div><div class="stat-label">Departamentos</div></div>
   </div>
   <p class="section-intro" style="margin-top:14px;">Los equipos con la etiqueta <span class="badge-adicional">Adicional</span> no estaban incluidos en la oferta inicial de Woden — quedan señalados aparte para que se puedan cotizar antes de recogerlos.</p>
 </header>
@@ -597,9 +613,44 @@ footer strong { color: var(--ink); }
       <div class="capacity-hint">Se recalcula solo con lo que falte por recolectar.</div>
     </div>
     <div class="capacity-result">
-      <div class="capacity-trips-row">
-        <span class="capacity-trips-number" id="trips-number">—</span>
-        <span class="capacity-trips-label" id="trips-label">ingresa una capacidad</span>
+      <div class="capacity-van-row">
+        <div class="capacity-van-wrap">
+          <svg class="capacity-van" viewBox="0 0 220 118" aria-hidden="true">
+            <ellipse cx="110" cy="106" rx="92" ry="6" fill="var(--paper-sunken)"/>
+            <!-- silueta tipo furgón de carga (Kangoo/panel van): capó corto, parabrisas inclinado, techo alto y plano hasta atrás -->
+            <path d="M18,92 L18,78 L27,64 L47,34 L177,34 L191,42 L191,92 Z" fill="var(--paper-raised)" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round"/>
+            <!-- ventanilla de cabina: única ventana visible; la caja de carga queda ciega a propósito, como un furgón real -->
+            <path d="M34,60 L50,36 L58,36 L42,60 Z" fill="var(--paper-sunken)" stroke="var(--ink)" stroke-width="1.5" stroke-linejoin="round"/>
+            <rect x="24" y="53" width="7" height="5" rx="1.5" fill="var(--paper-raised)" stroke="var(--ink)" stroke-width="1.3"/>
+            <line x1="150" y1="34" x2="150" y2="26" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/>
+            <rect x="19" y="71" width="7" height="5" rx="1.5" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="1"/>
+            <!-- ventanal de carga: aquí se ve el nivel de la carga, como un medidor -->
+            <clipPath id="cargoClip"><rect x="101" y="41" width="74" height="48" rx="3"/></clipPath>
+            <rect x="100" y="40" width="76" height="50" rx="4" fill="var(--paper-sunken)" stroke="var(--ink)" stroke-width="1.5"/>
+            <rect id="cargo-fill-rect" x="101" y="89" width="74" height="0" fill="var(--accent-soft)" clip-path="url(#cargoClip)"/>
+            <g id="cargo-pips" stroke="var(--accent-strong)" stroke-width="1.4" fill="none">
+              <g class="cargo-pip" data-threshold="15" transform="translate(108,70) scale(0.55)"><rect x="0" y="0" width="20" height="16" rx="2"/><path d="M0 5h20"/></g>
+              <g class="cargo-pip" data-threshold="35" transform="translate(128,70) scale(0.55)"><rect x="0" y="0" width="20" height="16" rx="2"/><path d="M0 5h20"/></g>
+              <g class="cargo-pip" data-threshold="55" transform="translate(148,70) scale(0.55)"><rect x="0" y="0" width="20" height="16" rx="2"/><path d="M0 5h20"/></g>
+              <g class="cargo-pip" data-threshold="75" transform="translate(108,48) scale(0.55)"><rect x="0" y="0" width="20" height="16" rx="2"/><path d="M0 5h20"/></g>
+              <g class="cargo-pip" data-threshold="90" transform="translate(128,48) scale(0.55)"><rect x="0" y="0" width="20" height="16" rx="2"/><path d="M0 5h20"/></g>
+            </g>
+            <!-- guardabarros y trim inferior -->
+            <rect x="45" y="76" width="38" height="18" rx="8" fill="var(--line-strong)"/>
+            <rect x="141" y="76" width="38" height="18" rx="8" fill="var(--line-strong)"/>
+            <rect x="16" y="80" width="14" height="13" rx="4" fill="var(--line-strong)"/>
+            <rect x="180" y="80" width="13" height="13" rx="4" fill="var(--line-strong)"/>
+            <circle cx="64" cy="92" r="15" fill="var(--paper)" stroke="var(--ink)" stroke-width="4"/>
+            <circle cx="64" cy="92" r="4.5" fill="var(--ink)"/>
+            <circle cx="160" cy="92" r="15" fill="var(--paper)" stroke="var(--ink)" stroke-width="4"/>
+            <circle cx="160" cy="92" r="4.5" fill="var(--ink)"/>
+          </svg>
+          <span class="capacity-van-label mono" id="van-fill-label">0% del viaje</span>
+        </div>
+        <div class="capacity-trips-row">
+          <span class="capacity-trips-number" id="trips-number">—</span>
+          <span class="capacity-trips-label" id="trips-label">ingresa una capacidad</span>
+        </div>
       </div>
       <div class="capacity-pending mono">Pendiente: <b id="pending-weight">0</b> kg de <span id="total-weight">0</span> kg</div>
       <div class="capacity-segments" id="capacity-segments"></div>
@@ -1470,18 +1521,18 @@ footer strong { color: var(--ink); }
     <div class="section-note">Selecciona un tipo de equipo para ver su peso y dimensiones estimadas (empaque incluido).</div>
   </div>
   <div class="catalog-grid" id="catalog-grid" role="tablist">
-    <button type="button" class="cat-tile" role="tab" aria-selected="true" data-selected="true" data-tipo="Portátil" data-cantidad="15" data-peso-unit="2.5" data-peso-total="37.5" data-caja="40×30×12" data-l="40" data-a="30" data-h="12"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="16" height="11" rx="1.2"/><path d="M6 20.5l-3 3h22l-3-3"/><path d="M3 23.5h22"/></svg></span><span class="cat-tile-name">Portátil</span><span class="cat-tile-qty mono">15</span></button>
-<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="Impresora" data-cantidad="4" data-peso-unit="9.0" data-peso-total="36.0" data-caja="55×40×35" data-l="55" data-a="40" data-h="35"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="18" height="9" rx="1.5"/><rect x="8" y="4" width="12" height="7" rx="1"/><rect x="9" y="19" width="10" height="6" rx="1"/><circle cx="19" cy="14" r="1" fill="currentColor" stroke="none"/></svg></span><span class="cat-tile-name">Impresora</span><span class="cat-tile-qty mono">4</span></button>
-<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="Impresora multifuncional" data-cantidad="2" data-peso-unit="22.0" data-peso-total="44.0" data-caja="65×55×50" data-l="65" data-a="55" data-h="50"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="18" height="9" rx="1.5"/><rect x="7" y="5" width="14" height="7" rx="1"/><line x1="9" y1="8.5" x2="19" y2="8.5"/><rect x="9" y="20" width="10" height="5" rx="1"/><circle cx="19" cy="15" r="1" fill="currentColor" stroke="none"/></svg></span><span class="cat-tile-name">Impresora multifuncional</span><span class="cat-tile-qty mono">2</span></button>
-<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="Escáner" data-cantidad="10" data-peso-unit="8.5" data-peso-total="85.0" data-caja="50×40×30" data-l="50" data-a="40" data-h="30"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="20" height="11" rx="1.5"/><rect x="7" y="4.5" width="14" height="5.5" rx="1"/><line x1="8" y1="14.5" x2="20" y2="14.5" stroke-dasharray="2 2.2"/></svg></span><span class="cat-tile-name">Escáner</span><span class="cat-tile-qty mono">10</span></button>
-<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="Switch / Red" data-cantidad="6" data-peso-unit="4.0" data-peso-total="24.0" data-caja="55×30×15" data-l="55" data-a="30" data-h="15"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="20" height="10" rx="1.5"/><circle cx="8" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="12.5" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="17" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="21.5" cy="14" r="1" fill="currentColor" stroke="none"/><line x1="7" y1="19" x2="7" y2="22"/><line x1="21" y1="19" x2="21" y2="22"/></svg></span><span class="cat-tile-name">Switch / Red</span><span class="cat-tile-qty mono">6</span></button>
-<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="UPS" data-cantidad="3" data-peso-unit="28.0" data-peso-total="84.0" data-caja="60×35×30" data-l="60" data-a="35" data-h="30"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="5" width="14" height="18" rx="2"/><line x1="11" y1="1.5" x2="11" y2="5"/><line x1="17" y1="1.5" x2="17" y2="5"/><path d="M16 10l-5 6h4l-2 6 6-7h-4z" fill="currentColor" stroke="none"/></svg></span><span class="cat-tile-name">UPS</span><span class="cat-tile-qty mono">3</span></button>
-<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="CPU / Torre" data-cantidad="2" data-peso-unit="8.5" data-peso-total="17.0" data-caja="45×40×25" data-l="45" data-a="40" data-h="25"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="4" width="12" height="20" rx="1.5"/><line x1="10.5" y1="8" x2="17.5" y2="8"/><line x1="10.5" y1="11" x2="17.5" y2="11"/><circle cx="14" cy="18" r="1.6"/></svg></span><span class="cat-tile-name">CPU / Torre</span><span class="cat-tile-qty mono">2</span></button>
-<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="All in One (AIO)" data-cantidad="1" data-peso-unit="6.0" data-peso-total="6.0" data-caja="55×45×15" data-l="55" data-a="45" data-h="15"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="18" height="14" rx="1.5"/><path d="M11 18l-1.2 5"/><path d="M17 18l1.2 5"/><line x1="8" y1="23" x2="20" y2="23"/></svg></span><span class="cat-tile-name">All in One (AIO)</span><span class="cat-tile-qty mono">1</span></button>
-<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="Módulo de fibra óptica (accesorio)" data-cantidad="2" data-peso-unit="0.1" data-peso-total="0.2" data-caja="15×10×5" data-l="15" data-a="10" data-h="5"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="17" height="6.5" rx="1"/><path d="M21 12.2h3v4.1h-3z"/><line x1="8" y1="11" x2="8" y2="7.5"/><line x1="13" y1="11" x2="13" y2="7.5"/></svg></span><span class="cat-tile-name">Módulo de fibra óptica (accesorio)</span><span class="cat-tile-qty mono">2</span></button>
-<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="Servidor" data-cantidad="1" data-peso-unit="18.0" data-peso-total="18.0" data-caja="70×60×40" data-l="70" data-a="60" data-h="40"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="16" height="5.5" rx="1"/><rect x="6" y="11.2" width="16" height="5.5" rx="1"/><rect x="6" y="18.5" width="16" height="5.5" rx="1"/><circle cx="9.5" cy="6.7" r="0.8" fill="currentColor" stroke="none"/><circle cx="9.5" cy="13.9" r="0.8" fill="currentColor" stroke="none"/><circle cx="9.5" cy="21.2" r="0.8" fill="currentColor" stroke="none"/></svg></span><span class="cat-tile-name">Servidor</span><span class="cat-tile-qty mono">1</span></button>
+    <button type="button" class="cat-tile" role="tab" aria-selected="true" data-selected="true" data-tipo="Portátil" data-cantidad="15" data-peso-unit="2.5" data-peso-total="37.5" data-caja="40×30×12" data-ref-label="una caja de zapatos"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="16" height="11" rx="1.2"/><path d="M6 20.5l-3 3h22l-3-3"/><path d="M3 23.5h22"/></svg></span><span class="cat-tile-name">Portátil</span><span class="cat-tile-qty mono">15</span><span class="cat-ref-icon" hidden><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="13" width="21" height="11" rx="1.5" fill="var(--paper-raised)"/><rect x="4" y="9" width="23" height="4.5" rx="1"/></svg></span></button>
+<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="Impresora" data-cantidad="4" data-peso-unit="9.0" data-peso-total="36.0" data-caja="55×40×35" data-ref-label="un microondas"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="18" height="9" rx="1.5"/><rect x="8" y="4" width="12" height="7" rx="1"/><rect x="9" y="19" width="10" height="6" rx="1"/><circle cx="19" cy="14" r="1" fill="currentColor" stroke="none"/></svg></span><span class="cat-tile-name">Impresora</span><span class="cat-tile-qty mono">4</span><span class="cat-ref-icon" hidden><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="23" height="15" rx="1.5" fill="var(--paper-raised)"/><rect x="7" y="11" width="12.5" height="9" rx="1"/><circle cx="23" cy="12.5" r="1" fill="currentColor" stroke="none"/><line x1="23" y1="16" x2="23" y2="20"/></svg></span></button>
+<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="Impresora multifuncional" data-cantidad="2" data-peso-unit="22.0" data-peso-total="44.0" data-caja="65×55×50" data-ref-label="una maleta de viaje"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="18" height="9" rx="1.5"/><rect x="7" y="5" width="14" height="7" rx="1"/><line x1="9" y1="8.5" x2="19" y2="8.5"/><rect x="9" y="20" width="10" height="5" rx="1"/><circle cx="19" cy="15" r="1" fill="currentColor" stroke="none"/></svg></span><span class="cat-tile-name">Impresora multifuncional</span><span class="cat-tile-qty mono">2</span><span class="cat-ref-icon" hidden><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="21" height="16" rx="2.5" fill="var(--paper-raised)"/><path d="M12 10V7a2 2 0 012-2h3a2 2 0 012 2v3"/><line x1="5" y1="17" x2="26" y2="17"/></svg></span></button>
+<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="Escáner" data-cantidad="10" data-peso-unit="8.5" data-peso-total="85.0" data-caja="50×40×30" data-ref-label="un microondas"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="20" height="11" rx="1.5"/><rect x="7" y="4.5" width="14" height="5.5" rx="1"/><line x1="8" y1="14.5" x2="20" y2="14.5" stroke-dasharray="2 2.2"/></svg></span><span class="cat-tile-name">Escáner</span><span class="cat-tile-qty mono">10</span><span class="cat-ref-icon" hidden><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="23" height="15" rx="1.5" fill="var(--paper-raised)"/><rect x="7" y="11" width="12.5" height="9" rx="1"/><circle cx="23" cy="12.5" r="1" fill="currentColor" stroke="none"/><line x1="23" y1="16" x2="23" y2="20"/></svg></span></button>
+<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="Switch / Red" data-cantidad="6" data-peso-unit="4.0" data-peso-total="24.0" data-caja="55×30×15" data-ref-label="un microondas"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="20" height="10" rx="1.5"/><circle cx="8" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="12.5" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="17" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="21.5" cy="14" r="1" fill="currentColor" stroke="none"/><line x1="7" y1="19" x2="7" y2="22"/><line x1="21" y1="19" x2="21" y2="22"/></svg></span><span class="cat-tile-name">Switch / Red</span><span class="cat-tile-qty mono">6</span><span class="cat-ref-icon" hidden><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="23" height="15" rx="1.5" fill="var(--paper-raised)"/><rect x="7" y="11" width="12.5" height="9" rx="1"/><circle cx="23" cy="12.5" r="1" fill="currentColor" stroke="none"/><line x1="23" y1="16" x2="23" y2="20"/></svg></span></button>
+<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="UPS" data-cantidad="3" data-peso-unit="28.0" data-peso-total="84.0" data-caja="60×35×30" data-ref-label="un microondas"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="5" width="14" height="18" rx="2"/><line x1="11" y1="1.5" x2="11" y2="5"/><line x1="17" y1="1.5" x2="17" y2="5"/><path d="M16 10l-5 6h4l-2 6 6-7h-4z" fill="currentColor" stroke="none"/></svg></span><span class="cat-tile-name">UPS</span><span class="cat-tile-qty mono">3</span><span class="cat-ref-icon" hidden><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="23" height="15" rx="1.5" fill="var(--paper-raised)"/><rect x="7" y="11" width="12.5" height="9" rx="1"/><circle cx="23" cy="12.5" r="1" fill="currentColor" stroke="none"/><line x1="23" y1="16" x2="23" y2="20"/></svg></span></button>
+<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="CPU / Torre" data-cantidad="2" data-peso-unit="8.5" data-peso-total="17.0" data-caja="45×40×25" data-ref-label="un microondas"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="4" width="12" height="20" rx="1.5"/><line x1="10.5" y1="8" x2="17.5" y2="8"/><line x1="10.5" y1="11" x2="17.5" y2="11"/><circle cx="14" cy="18" r="1.6"/></svg></span><span class="cat-tile-name">CPU / Torre</span><span class="cat-tile-qty mono">2</span><span class="cat-ref-icon" hidden><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="23" height="15" rx="1.5" fill="var(--paper-raised)"/><rect x="7" y="11" width="12.5" height="9" rx="1"/><circle cx="23" cy="12.5" r="1" fill="currentColor" stroke="none"/><line x1="23" y1="16" x2="23" y2="20"/></svg></span></button>
+<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="All in One (AIO)" data-cantidad="1" data-peso-unit="6.0" data-peso-total="6.0" data-caja="55×45×15" data-ref-label="un microondas"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="18" height="14" rx="1.5"/><path d="M11 18l-1.2 5"/><path d="M17 18l1.2 5"/><line x1="8" y1="23" x2="20" y2="23"/></svg></span><span class="cat-tile-name">All in One (AIO)</span><span class="cat-tile-qty mono">1</span><span class="cat-ref-icon" hidden><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="23" height="15" rx="1.5" fill="var(--paper-raised)"/><rect x="7" y="11" width="12.5" height="9" rx="1"/><circle cx="23" cy="12.5" r="1" fill="currentColor" stroke="none"/><line x1="23" y1="16" x2="23" y2="20"/></svg></span></button>
+<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="Módulo de fibra óptica (accesorio)" data-cantidad="2" data-peso-unit="0.1" data-peso-total="0.2" data-caja="15×10×5" data-ref-label="una baraja de cartas"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="17" height="6.5" rx="1"/><path d="M21 12.2h3v4.1h-3z"/><line x1="8" y1="11" x2="8" y2="7.5"/><line x1="13" y1="11" x2="13" y2="7.5"/></svg></span><span class="cat-tile-name">Módulo de fibra óptica (accesorio)</span><span class="cat-tile-qty mono">2</span><span class="cat-ref-icon" hidden><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="7" width="14" height="18" rx="1.5" transform="rotate(-8 17 16)"/><rect x="8" y="8" width="14" height="18" rx="1.5" fill="var(--paper-raised)"/></svg></span></button>
+<button type="button" class="cat-tile" role="tab" aria-selected="false" data-tipo="Servidor" data-cantidad="1" data-peso-unit="18.0" data-peso-total="18.0" data-caja="70×60×40" data-ref-label="una maleta de viaje"><span class="cat-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="16" height="5.5" rx="1"/><rect x="6" y="11.2" width="16" height="5.5" rx="1"/><rect x="6" y="18.5" width="16" height="5.5" rx="1"/><circle cx="9.5" cy="6.7" r="0.8" fill="currentColor" stroke="none"/><circle cx="9.5" cy="13.9" r="0.8" fill="currentColor" stroke="none"/><circle cx="9.5" cy="21.2" r="0.8" fill="currentColor" stroke="none"/></svg></span><span class="cat-tile-name">Servidor</span><span class="cat-tile-qty mono">1</span><span class="cat-ref-icon" hidden><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="21" height="16" rx="2.5" fill="var(--paper-raised)"/><path d="M12 10V7a2 2 0 012-2h3a2 2 0 012 2v3"/><line x1="5" y1="17" x2="26" y2="17"/></svg></span></button>
   </div>
-  <div class="cat-detail" id="cat-detail" data-max-dim="70">
+  <div class="cat-detail" id="cat-detail">
     <div class="cat-detail-icon" id="cat-detail-icon"></div>
     <div>
       <h3 class="cat-detail-name" id="cat-detail-name">—</h3>
@@ -1492,31 +1543,26 @@ footer strong { color: var(--ink); }
         <div><span class="cat-detail-stat-label">Caja aprox. (L×A×A)</span><span class="cat-detail-stat-value" id="cat-detail-caja">—</span></div>
       </div>
     </div>
-    <div class="cat-detail-box-wrap">
-      <div class="cat-detail-box" id="cat-detail-box" style="width:60px;height:60px;"></div>
-      <span class="cat-detail-box-label">tamaño relativo</span>
+    <div class="cat-detail-ref-wrap">
+      <span class="cat-detail-ref-icon" id="cat-detail-ref-icon"></span>
+      <span class="cat-detail-ref-text">≈ tamaño de <b id="cat-detail-ref-label">—</b></span>
     </div>
   </div>
 </section>
 
 <section id="resumen">
-  <div class="section-head"><h2>Resumen por departamento y tipo de equipo</h2></div>
+  <div class="section-head">
+    <h2>Resumen por departamento y tipo de equipo</h2>
+    <div class="section-note">Ordenado de mayor a menor. En cada pastilla: cantidad de equipos en naranja, peso total debajo.</div>
+  </div>
   <div class="two-col">
     <div class="card">
       <h3>Por departamento</h3>
-      <table class="summary-table">
-        <colgroup><col style="width:40%"><col style="width:20%"><col style="width:20%"><col style="width:20%"></colgroup>
-        <thead><tr><th>Departamento</th><th class="num">Sedes</th><th class="num">Equipos</th><th class="num">Peso</th></tr></thead>
-        <tbody><tr><td>Antioquia</td><td class="num">7</td><td class="num">14</td><td class="num mono">92.0 kg</td></tr><tr><td>Cesar</td><td class="num">2</td><td class="num">8</td><td class="num mono">83.0 kg</td></tr><tr><td>Atlántico</td><td class="num">1</td><td class="num">5</td><td class="num mono">16.7 kg</td></tr><tr><td>Boyacá</td><td class="num">4</td><td class="num">4</td><td class="num mono">32.5 kg</td></tr><tr><td>Caquetá</td><td class="num">3</td><td class="num">3</td><td class="num mono">53.0 kg</td></tr><tr><td>Valle del Cauca</td><td class="num">3</td><td class="num">3</td><td class="num mono">24.5 kg</td></tr><tr><td>Cundinamarca</td><td class="num">2</td><td class="num">2</td><td class="num mono">17.5 kg</td></tr><tr><td>Córdoba</td><td class="num">1</td><td class="num">2</td><td class="num mono">8.0 kg</td></tr><tr><td>Casanare</td><td class="num">2</td><td class="num">2</td><td class="num mono">11.0 kg</td></tr><tr><td>Risaralda</td><td class="num">1</td><td class="num">2</td><td class="num mono">5.0 kg</td></tr><tr><td>La Guajira</td><td class="num">1</td><td class="num">1</td><td class="num mono">8.5 kg</td></tr></tbody>
-      </table>
+      <div class="chip-grid"><div class="chip-stat"><span class="chip-name">Antioquia</span><span class="chip-num mono">14</span><span class="chip-sub mono">92.0 kg</span></div><div class="chip-stat"><span class="chip-name">Cesar</span><span class="chip-num mono">8</span><span class="chip-sub mono">83.0 kg</span></div><div class="chip-stat"><span class="chip-name">Atlántico</span><span class="chip-num mono">5</span><span class="chip-sub mono">16.7 kg</span></div><div class="chip-stat"><span class="chip-name">Boyacá</span><span class="chip-num mono">4</span><span class="chip-sub mono">32.5 kg</span></div><div class="chip-stat"><span class="chip-name">Caquetá</span><span class="chip-num mono">3</span><span class="chip-sub mono">53.0 kg</span></div><div class="chip-stat"><span class="chip-name">Valle del Cauca</span><span class="chip-num mono">3</span><span class="chip-sub mono">24.5 kg</span></div><div class="chip-stat"><span class="chip-name">Cundinamarca</span><span class="chip-num mono">2</span><span class="chip-sub mono">17.5 kg</span></div><div class="chip-stat"><span class="chip-name">Córdoba</span><span class="chip-num mono">2</span><span class="chip-sub mono">8.0 kg</span></div><div class="chip-stat"><span class="chip-name">Casanare</span><span class="chip-num mono">2</span><span class="chip-sub mono">11.0 kg</span></div><div class="chip-stat"><span class="chip-name">Risaralda</span><span class="chip-num mono">2</span><span class="chip-sub mono">5.0 kg</span></div><div class="chip-stat"><span class="chip-name">La Guajira</span><span class="chip-num mono">1</span><span class="chip-sub mono">8.5 kg</span></div></div>
     </div>
     <div class="card">
       <h3>Por tipo de equipo</h3>
-      <table class="summary-table">
-        <colgroup><col style="width:42%"><col style="width:14%"><col style="width:22%"><col style="width:22%"></colgroup>
-        <thead><tr><th>Tipo</th><th class="num">Cant.</th><th class="num">Peso unit.</th><th class="num">Peso total</th></tr></thead>
-        <tbody><tr><td>Portátil</td><td class="num">15</td><td class="num mono">2.5 kg</td><td class="num mono">37.5 kg</td></tr><tr><td>Escáner</td><td class="num">10</td><td class="num mono">8.5 kg</td><td class="num mono">85.0 kg</td></tr><tr><td>Switch / Red</td><td class="num">6</td><td class="num mono">4.0 kg</td><td class="num mono">24.0 kg</td></tr><tr><td>Impresora</td><td class="num">4</td><td class="num mono">9.0 kg</td><td class="num mono">36.0 kg</td></tr><tr><td>UPS</td><td class="num">3</td><td class="num mono">28.0 kg</td><td class="num mono">84.0 kg</td></tr><tr><td>Impresora multifuncional</td><td class="num">2</td><td class="num mono">22.0 kg</td><td class="num mono">44.0 kg</td></tr><tr><td>CPU / Torre</td><td class="num">2</td><td class="num mono">8.5 kg</td><td class="num mono">17.0 kg</td></tr><tr><td>Módulo de fibra óptica (accesorio)</td><td class="num">2</td><td class="num mono">0.1 kg</td><td class="num mono">0.2 kg</td></tr><tr><td>Servidor</td><td class="num">1</td><td class="num mono">18.0 kg</td><td class="num mono">18.0 kg</td></tr><tr><td>All in One (AIO)</td><td class="num">1</td><td class="num mono">6.0 kg</td><td class="num mono">6.0 kg</td></tr></tbody>
-      </table>
+      <div class="chip-grid"><div class="chip-stat"><span class="chip-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="16" height="11" rx="1.2"/><path d="M6 20.5l-3 3h22l-3-3"/><path d="M3 23.5h22"/></svg></span><span class="chip-name">Portátil</span><span class="chip-num mono">15</span><span class="chip-sub mono">37.5 kg</span></div><div class="chip-stat"><span class="chip-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="20" height="11" rx="1.5"/><rect x="7" y="4.5" width="14" height="5.5" rx="1"/><line x1="8" y1="14.5" x2="20" y2="14.5" stroke-dasharray="2 2.2"/></svg></span><span class="chip-name">Escáner</span><span class="chip-num mono">10</span><span class="chip-sub mono">85.0 kg</span></div><div class="chip-stat"><span class="chip-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="20" height="10" rx="1.5"/><circle cx="8" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="12.5" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="17" cy="14" r="1" fill="currentColor" stroke="none"/><circle cx="21.5" cy="14" r="1" fill="currentColor" stroke="none"/><line x1="7" y1="19" x2="7" y2="22"/><line x1="21" y1="19" x2="21" y2="22"/></svg></span><span class="chip-name">Switch / Red</span><span class="chip-num mono">6</span><span class="chip-sub mono">24.0 kg</span></div><div class="chip-stat"><span class="chip-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="18" height="9" rx="1.5"/><rect x="8" y="4" width="12" height="7" rx="1"/><rect x="9" y="19" width="10" height="6" rx="1"/><circle cx="19" cy="14" r="1" fill="currentColor" stroke="none"/></svg></span><span class="chip-name">Impresora</span><span class="chip-num mono">4</span><span class="chip-sub mono">36.0 kg</span></div><div class="chip-stat"><span class="chip-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="5" width="14" height="18" rx="2"/><line x1="11" y1="1.5" x2="11" y2="5"/><line x1="17" y1="1.5" x2="17" y2="5"/><path d="M16 10l-5 6h4l-2 6 6-7h-4z" fill="currentColor" stroke="none"/></svg></span><span class="chip-name">UPS</span><span class="chip-num mono">3</span><span class="chip-sub mono">84.0 kg</span></div><div class="chip-stat"><span class="chip-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="18" height="9" rx="1.5"/><rect x="7" y="5" width="14" height="7" rx="1"/><line x1="9" y1="8.5" x2="19" y2="8.5"/><rect x="9" y="20" width="10" height="5" rx="1"/><circle cx="19" cy="15" r="1" fill="currentColor" stroke="none"/></svg></span><span class="chip-name">Impresora multifuncional</span><span class="chip-num mono">2</span><span class="chip-sub mono">44.0 kg</span></div><div class="chip-stat"><span class="chip-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="4" width="12" height="20" rx="1.5"/><line x1="10.5" y1="8" x2="17.5" y2="8"/><line x1="10.5" y1="11" x2="17.5" y2="11"/><circle cx="14" cy="18" r="1.6"/></svg></span><span class="chip-name">CPU / Torre</span><span class="chip-num mono">2</span><span class="chip-sub mono">17.0 kg</span></div><div class="chip-stat"><span class="chip-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="17" height="6.5" rx="1"/><path d="M21 12.2h3v4.1h-3z"/><line x1="8" y1="11" x2="8" y2="7.5"/><line x1="13" y1="11" x2="13" y2="7.5"/></svg></span><span class="chip-name">Módulo de fibra óptica (accesorio)</span><span class="chip-num mono">2</span><span class="chip-sub mono">0.2 kg</span></div><div class="chip-stat"><span class="chip-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="16" height="5.5" rx="1"/><rect x="6" y="11.2" width="16" height="5.5" rx="1"/><rect x="6" y="18.5" width="16" height="5.5" rx="1"/><circle cx="9.5" cy="6.7" r="0.8" fill="currentColor" stroke="none"/><circle cx="9.5" cy="13.9" r="0.8" fill="currentColor" stroke="none"/><circle cx="9.5" cy="21.2" r="0.8" fill="currentColor" stroke="none"/></svg></span><span class="chip-name">Servidor</span><span class="chip-num mono">1</span><span class="chip-sub mono">18.0 kg</span></div><div class="chip-stat"><span class="chip-icon"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="18" height="14" rx="1.5"/><path d="M11 18l-1.2 5"/><path d="M17 18l1.2 5"/><line x1="8" y1="23" x2="20" y2="23"/></svg></span><span class="chip-name">All in One (AIO)</span><span class="chip-num mono">1</span><span class="chip-sub mono">6.0 kg</span></div></div>
     </div>
   </div>
 </section>
@@ -1655,6 +1701,7 @@ footer strong { color: var(--ink); }
         seg.innerHTML = '<div class="cap-segment-fill" style="width:100%"></div><span class="cap-segment-label">' + paisaKg(pending) + ' kg</span>';
         segWrap.appendChild(seg);
       }
+      updateVan(pending > 0 ? 100 : 0);
       return;
     }
 
@@ -1671,6 +1718,23 @@ footer strong { color: var(--ink); }
       seg2.innerHTML = '<div class="cap-segment-fill" style="width:' + pct2 + '%"></div><span class="cap-segment-label">Viaje ' + (i + 1) + ' · ' + paisaKg(load) + ' kg</span>';
       segWrap.appendChild(seg2);
     }
+    updateVan(Math.min(100, Math.round((pending / cap) * 100)));
+  }
+
+  function updateVan(pct) {
+    pct = Math.max(0, Math.min(100, pct || 0));
+    var rect = document.getElementById('cargo-fill-rect');
+    if (rect) {
+      var h = 48 * pct / 100;
+      rect.setAttribute('height', String(h));
+      rect.setAttribute('y', String(89 - h));
+    }
+    var label = document.getElementById('van-fill-label');
+    if (label) label.textContent = pct + '% del viaje';
+    document.querySelectorAll('.cargo-pip').forEach(function(pip) {
+      var t = parseFloat(pip.getAttribute('data-threshold')) || 0;
+      pip.classList.toggle('cargo-pip-on', pct >= t);
+    });
   }
 
   var mapMarkers = {};
@@ -1749,10 +1813,7 @@ footer strong { color: var(--ink); }
     var pesoUnit = tile.getAttribute('data-peso-unit');
     var pesoTotal = tile.getAttribute('data-peso-total');
     var caja = tile.getAttribute('data-caja');
-    var Ld = parseFloat(tile.getAttribute('data-l'));
-    var Ad = parseFloat(tile.getAttribute('data-a'));
-    var maxDim = parseFloat(panel.getAttribute('data-max-dim')) || 70;
-    var scale = 130 / maxDim;
+    var refLabel = tile.getAttribute('data-ref-label');
     var iconSrc = tile.querySelector('.cat-icon');
     var iconDst = document.getElementById('cat-detail-icon');
     if (iconSrc && iconDst) iconDst.innerHTML = iconSrc.innerHTML;
@@ -1761,11 +1822,11 @@ footer strong { color: var(--ink); }
     document.getElementById('cat-detail-peso-unit').textContent = pesoUnit + ' kg';
     document.getElementById('cat-detail-peso-total').textContent = pesoTotal + ' kg';
     document.getElementById('cat-detail-caja').textContent = caja + ' cm';
-    var box = document.getElementById('cat-detail-box');
-    if (box) {
-      box.style.width = Math.max(28, Ld * scale) + 'px';
-      box.style.height = Math.max(28, Ad * scale) + 'px';
-    }
+    var refIconSrc = tile.querySelector('.cat-ref-icon');
+    var refIconDst = document.getElementById('cat-detail-ref-icon');
+    if (refIconSrc && refIconDst) refIconDst.innerHTML = refIconSrc.innerHTML;
+    var refLabelDst = document.getElementById('cat-detail-ref-label');
+    if (refLabelDst) refLabelDst.textContent = refLabel || '—';
   }
 
   function refreshAll() {
