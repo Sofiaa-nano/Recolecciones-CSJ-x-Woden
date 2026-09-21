@@ -249,91 +249,6 @@ svg.progress-ring { width: 100%; height: 100%; transform: rotate(-90deg); }
 }
 .map-popup-btn:hover { background: var(--accent-strong); }
 
-/* ---------- planificador de viajes por departamento ---------- */
-.trip-planner {
-  display: grid;
-  grid-template-columns: minmax(200px, 260px) 1fr;
-  gap: 20px;
-  align-items: start;
-}
-@media (max-width: 720px) { .trip-planner { grid-template-columns: 1fr; } }
-.trip-dept-picker {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-height: 420px;
-  overflow-y: auto;
-  padding-right: 2px;
-}
-.dept-pick-chip {
-  appearance: none;
-  cursor: pointer;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  background: var(--paper-raised);
-  border: 1.5px solid var(--line);
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-family: "Public Sans", sans-serif;
-  color: var(--ink);
-  transition: border-color .15s ease, background .15s ease;
-}
-.dept-pick-chip:hover { border-color: var(--accent); }
-.dept-pick-chip[aria-pressed="true"] { border-color: var(--accent-strong); background: var(--accent-soft); }
-.dept-pick-name { font-size: 13.5px; font-weight: 600; }
-.dept-pick-kg { font-size: 12px; color: var(--ink-soft); }
-.dept-pick-chip[aria-pressed="true"] .dept-pick-kg { color: var(--accent-ink); }
-
-.trip-result-card {
-  background: var(--paper-raised);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 24px 26px;
-}
-.trip-result-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
-.trip-dept-name { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 22px; }
-.trip-input-group { display: flex; align-items: center; gap: 8px; }
-.trip-step-btn {
-  appearance: none;
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  border: 1.5px solid var(--line-strong);
-  background: var(--paper);
-  color: var(--ink);
-  font-size: 17px;
-  line-height: 1;
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-}
-.trip-step-btn:hover { border-color: var(--accent); color: var(--accent-strong); }
-.trip-step-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-input#trips-count-input {
-  width: 64px;
-  text-align: center;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 18px;
-  font-weight: 600;
-  padding: 6px 4px;
-  border: 1.5px solid var(--line-strong);
-  border-radius: 8px;
-  background: var(--paper);
-  color: var(--ink);
-}
-input#trips-count-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-.trip-input-label { font-size: 12.5px; color: var(--ink-soft); }
-.trip-result-hero { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
-.trip-result-value { font-family: "Barlow Condensed", sans-serif; font-weight: 700; font-size: 46px; line-height: 1; color: var(--accent-strong); }
-.trip-result-unit { font-size: 14px; color: var(--ink-soft); }
-.trip-pending-note { font-size: 12.5px; color: var(--ink-soft); margin-bottom: 14px; }
-.trip-pending-note b { color: var(--ink); font-weight: 600; }
-.trip-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.trip-chip { min-width: 84px; background: var(--pending-soft); border-radius: 8px; padding: 6px 10px; font-size: 11.5px; font-family: "IBM Plex Mono", monospace; color: var(--accent-ink); font-weight: 600; text-align: center; border: 1px solid var(--line); }
-
 /* ---------- próxima parada (aviso arriba) ---------- */
 .next-stop-banner {
   display: flex;
@@ -1832,46 +1747,6 @@ footer strong { color: var(--ink); }
   </div>
 </section>
 
-<section id="capacidad">
-  <div class="section-head">
-    <h2>Viajes por departamento</h2>
-    <div class="section-note">Un solo vehículo no alcanza para toda la recolección nacional. Elige un departamento e ingresa cuántos viajes vas a hacer allí para ver cuánto peso le corresponde a cada uno.</div>
-  </div>
-  <div class="trip-planner">
-    <div class="trip-dept-picker" role="tablist" aria-label="Selecciona un departamento">
-      <button type="button" class="dept-pick-chip" data-dept="Antioquia" aria-pressed="true" data-selected="true"><span class="dept-pick-name">Antioquia</span><span class="dept-pick-kg mono">92,0 kg</span></button>
-<button type="button" class="dept-pick-chip" data-dept="Cesar" aria-pressed="false"><span class="dept-pick-name">Cesar</span><span class="dept-pick-kg mono">83,0 kg</span></button>
-<button type="button" class="dept-pick-chip" data-dept="Atlántico" aria-pressed="false"><span class="dept-pick-name">Atlántico</span><span class="dept-pick-kg mono">16,7 kg</span></button>
-<button type="button" class="dept-pick-chip" data-dept="Boyacá" aria-pressed="false"><span class="dept-pick-name">Boyacá</span><span class="dept-pick-kg mono">32,5 kg</span></button>
-<button type="button" class="dept-pick-chip" data-dept="Caquetá" aria-pressed="false"><span class="dept-pick-name">Caquetá</span><span class="dept-pick-kg mono">53,0 kg</span></button>
-<button type="button" class="dept-pick-chip" data-dept="Valle del Cauca" aria-pressed="false"><span class="dept-pick-name">Valle del Cauca</span><span class="dept-pick-kg mono">24,5 kg</span></button>
-<button type="button" class="dept-pick-chip" data-dept="Cundinamarca" aria-pressed="false"><span class="dept-pick-name">Cundinamarca</span><span class="dept-pick-kg mono">17,5 kg</span></button>
-<button type="button" class="dept-pick-chip" data-dept="Córdoba" aria-pressed="false"><span class="dept-pick-name">Córdoba</span><span class="dept-pick-kg mono">8,0 kg</span></button>
-<button type="button" class="dept-pick-chip" data-dept="Casanare" aria-pressed="false"><span class="dept-pick-name">Casanare</span><span class="dept-pick-kg mono">11,0 kg</span></button>
-<button type="button" class="dept-pick-chip" data-dept="Risaralda" aria-pressed="false"><span class="dept-pick-name">Risaralda</span><span class="dept-pick-kg mono">5,0 kg</span></button>
-<button type="button" class="dept-pick-chip" data-dept="La Guajira" aria-pressed="false"><span class="dept-pick-name">La Guajira</span><span class="dept-pick-kg mono">8,5 kg</span></button>
-<button type="button" class="dept-pick-chip" data-dept="Magdalena" aria-pressed="false"><span class="dept-pick-name">Magdalena</span><span class="dept-pick-kg mono">4,0 kg</span></button>
-    </div>
-    <div class="trip-result-card">
-      <div class="trip-result-head">
-        <span class="trip-dept-name" id="trip-dept-name">Antioquia</span>
-        <div class="trip-input-group">
-          <button type="button" class="trip-step-btn" id="trip-dec" aria-label="Restar un viaje">−</button>
-          <input type="number" id="trips-count-input" class="mono" min="1" step="1" value="1" inputmode="numeric" aria-label="Número de viajes">
-          <button type="button" class="trip-step-btn" id="trip-inc" aria-label="Sumar un viaje">+</button>
-          <span class="trip-input-label">viaje(s)</span>
-        </div>
-      </div>
-      <div class="trip-result-hero">
-        <span class="trip-result-value mono" id="trip-kg-value">0,0</span>
-        <span class="trip-result-unit">kg por viaje</span>
-      </div>
-      <div class="trip-pending-note mono" id="trip-pending-note">Pendiente en Antioquia: 0 kg</div>
-      <div class="trip-chips" id="trip-chips"></div>
-    </div>
-  </div>
-</section>
-
 <section id="catalogo">
   <div class="section-head">
     <h2>Catálogo de referencia</h2>
@@ -2128,55 +2003,6 @@ footer strong { color: var(--ink); }
       if (!(cb && cb.checked)) pending += peso;
     });
     return { total: total, pending: pending };
-  }
-
-  function selectedDeptChip() {
-    return document.querySelector('.dept-pick-chip[aria-pressed="true"]');
-  }
-
-  function stepTrips(delta) {
-    var input = document.getElementById('trips-count-input');
-    if (!input) return;
-    var v = parseInt(input.value, 10);
-    if (!v || v < 1) v = 1;
-    v = Math.max(1, v + delta);
-    input.value = String(v);
-    updateTripPlanner();
-  }
-
-  function updateTripPlanner() {
-    document.querySelectorAll('.dept-pick-chip').forEach(function(chip) {
-      var d = computeDeptPending(chip.getAttribute('data-dept'));
-      var kgSpan = chip.querySelector('.dept-pick-kg');
-      if (kgSpan) kgSpan.textContent = paisaKg(d.pending) + ' kg';
-    });
-
-    var chip = selectedDeptChip();
-    var dept = chip ? chip.getAttribute('data-dept') : null;
-    var nameEl = document.getElementById('trip-dept-name');
-    var kgEl = document.getElementById('trip-kg-value');
-    var noteEl = document.getElementById('trip-pending-note');
-    var chipsWrap = document.getElementById('trip-chips');
-    var input = document.getElementById('trips-count-input');
-    if (!dept || !kgEl) return;
-
-    var info = computeDeptPending(dept);
-    if (nameEl) nameEl.textContent = dept;
-    var trips = input ? parseInt(input.value, 10) : 1;
-    if (!trips || trips < 1) trips = 1;
-    var perTrip = info.pending / trips;
-    kgEl.textContent = paisaKg(perTrip);
-    if (noteEl) noteEl.innerHTML = 'Pendiente en ' + dept + ': <b>' + paisaKg(info.pending) + '</b> kg de ' + paisaKg(info.total) + ' kg';
-
-    if (chipsWrap) {
-      chipsWrap.innerHTML = '';
-      for (var i = 0; i < trips; i++) {
-        var c = document.createElement('div');
-        c.className = 'trip-chip';
-        c.textContent = 'Viaje ' + (i + 1) + ' · ' + paisaKg(perTrip) + ' kg';
-        chipsWrap.appendChild(c);
-      }
-    }
   }
 
   function updateOrderList() {
@@ -2622,14 +2448,13 @@ footer strong { color: var(--ink); }
     updateOverallProgress();
     updateDeptProgress();
     updateHeroStats();
-    updateTripPlanner();
     updateOrderList();
     updateMapMarkers();
     renderExtraIndex();
   }
 
   document.addEventListener('change', function(e) {
-    if (e.target.classList && (e.target.classList.contains('js-collect') || e.target.id === 'trips-count-input')) {
+    if (e.target.classList && e.target.classList.contains('js-collect')) {
       refreshAll();
     }
     if (e.target.classList && (e.target.classList.contains('js-collect') || e.target.classList.contains('js-novedad'))) {
@@ -2637,12 +2462,6 @@ footer strong { color: var(--ink); }
       if (card) pushUpdate(card);
     }
   });
-  var tripsInputEl = document.getElementById('trips-count-input');
-  if (tripsInputEl) tripsInputEl.addEventListener('input', updateTripPlanner);
-  var tripDecBtn = document.getElementById('trip-dec');
-  if (tripDecBtn) tripDecBtn.addEventListener('click', function() { stepTrips(-1); });
-  var tripIncBtn = document.getElementById('trip-inc');
-  if (tripIncBtn) tripIncBtn.addEventListener('click', function() { stepTrips(1); });
 
   document.addEventListener('click', function(e) {
     var tile = e.target.closest && e.target.closest('.cat-tile');
@@ -2654,17 +2473,6 @@ footer strong { color: var(--ink); }
       tile.setAttribute('aria-selected', 'true');
       tile.setAttribute('data-selected', 'true');
       updateCatalogDetail(tile);
-      return;
-    }
-    var deptChip = e.target.closest && e.target.closest('.dept-pick-chip');
-    if (deptChip) {
-      document.querySelectorAll('.dept-pick-chip').forEach(function(c) {
-        c.setAttribute('aria-pressed', 'false');
-        c.removeAttribute('data-selected');
-      });
-      deptChip.setAttribute('aria-pressed', 'true');
-      deptChip.setAttribute('data-selected', 'true');
-      updateTripPlanner();
       return;
     }
     var orderBtn = e.target.closest && e.target.closest('.order-arrow-btn');
